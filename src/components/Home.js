@@ -1,4 +1,5 @@
 import React from "react";
+import TransactionList from "./TransactionList"
 
 function Home() {
     return (
@@ -65,38 +66,7 @@ function Home() {
             <div id="stockGraphContainer" className="stock-graph__container"></div>
         </section>
         <section className="stock-transactions full-width">
-            <div className="stock-transactions__grid-row">
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text stock-transactions__grid-text--white">Transaction ID</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text stock-transactions__grid-text--white">stock</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text stock-transactions__grid-text--white">amount</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text stock-transactions__grid-text--white">direction</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text stock-transactions__grid-text--white">price</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text stock-transactions__grid-text--white">total</span></div>
-            </div>
-            <div className="stock-transactions__grid-row">
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">tr3</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">AAPL</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">1</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text stock-transactions__grid-cell-sell">SELL</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">256</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">256</span></div>
-            </div>
-            <div className="stock-transactions__grid-row">
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">tr2</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">GOOG</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">5</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text stock-transactions__grid-cell-buy">BUY</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">1001</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">5005</span></div>
-            </div>
-            <div className="stock-transactions__grid-row">
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">tr1</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">AAPL</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">10</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text stock-transactions__grid-cell-buy">BUY</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">245</span></div>
-                <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text">2450</span></div>
-            </div>
+            <TransactionList />
         </section>
 
         <div className="modal modal__buy">
