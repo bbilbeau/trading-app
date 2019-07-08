@@ -12,6 +12,7 @@ import {
 function watchListReducer(state = {watchList:[]}, action) {
   switch (action.type) {
     case REQUEST_WATCHLIST:
+      return state
     case RECEIVE_WATCHLIST:
       return Object.assign({}, state, {
         watchList: action.items
@@ -24,6 +25,7 @@ function watchListReducer(state = {watchList:[]}, action) {
 function allocationsReducer(state = {allocations:[]}, action) {
   switch (action.type) {
     case REQUEST_ALLOCATIONS:
+      return state
     case RECEIVE_ALLOCATIONS:
       return Object.assign({}, state, {
         allocations: action.items
@@ -36,6 +38,7 @@ function allocationsReducer(state = {allocations:[]}, action) {
 function transactionsReducer(state = {transactions:[]}, action) {
   switch (action.type) {
     case REQUEST_TRANSACTIONS:
+      return state
     case RECEIVE_TRANSACTIONS:
       return Object.assign({}, state, {
         transactions: action.items

@@ -15,7 +15,6 @@ export function fetchAllocationsAndWatchList(userId) {
 }
 
 function receiveWatchList(json) {
-    console.log('receive watch');
     return {
         type: RECEIVE_WATCHLIST,
         items: json
@@ -23,7 +22,6 @@ function receiveWatchList(json) {
 }
 
 function requestWatchList(userId) {
-    console.log('request watch');
     return {
         type: REQUEST_WATCHLIST,
         userId
@@ -46,7 +44,6 @@ export function fetchWatchList(userId) {
 }
 
 function receiveAllocations(json) {
-    console.log('receive allocations');
     return {
         type: RECEIVE_ALLOCATIONS,
         items: json
@@ -54,7 +51,6 @@ function receiveAllocations(json) {
 }
 
 function requestAllocations(userId) {
-    console.log('request allocations');
     return {
         type: REQUEST_ALLOCATIONS,
         userId
