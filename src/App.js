@@ -26,7 +26,7 @@ function App() {
       <div>
         <Route path="/" exact component={Home} />
         <Route path="/assets/" component={Assets} />
-        <Route path="/details/" component={Details} />
+        <Route path="/details/:stock?" component={Details} />
       </div>
     </Router>
   );

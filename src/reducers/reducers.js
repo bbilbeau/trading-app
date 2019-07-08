@@ -1,17 +1,39 @@
 import { combineReducers } from 'redux'
 
 import {
-    REQUEST_WATCH,
-    RECEIVE_WATCH,
+    REQUEST_WATCHLIST,
+    RECEIVE_WATCHLIST,
+    REQUEST_ALLOCATIONS,
+    RECEIVE_ALLOCATIONS,
     REQUEST_TRANSACTIONS,
     RECEIVE_TRANSACTIONS
 } from '../actions/actions'
 
-const initialState = {
-    transactions: []
-};
+function watchListReducer(state = {watchList:[]}, action) {
+  switch (action.type) {
+    case REQUEST_WATCHLIST:
+    case RECEIVE_WATCHLIST:
+      return Object.assign({}, state, {
+        watchList: action.items
+      })
+    default:
+      return state
+  }
+}
 
-function transactionsReducer(state = initialState, action) {
+function allocationsReducer(state = {allocations:[]}, action) {
+  switch (action.type) {
+    case REQUEST_ALLOCATIONS:
+    case RECEIVE_ALLOCATIONS:
+      return Object.assign({}, state, {
+        allocations: action.items
+      })
+    default:
+      return state
+  }
+}
+
+function transactionsReducer(state = {transactions:[]}, action) {
   switch (action.type) {
     case REQUEST_TRANSACTIONS:
     case RECEIVE_TRANSACTIONS:
@@ -24,6 +46,8 @@ function transactionsReducer(state = initialState, action) {
 }
 
 const rootReducer = combineReducers({
+    watchState: watchListReducer,
+    allocationState: allocationsReducer,
     transactionState: transactionsReducer
 })
 

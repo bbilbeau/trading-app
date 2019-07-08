@@ -9,6 +9,13 @@ class TransactionList extends Component {
         this.props.dispatch(fetchTransactions("benjamin"));
     }
 
+    filterTransactions(transactions) {
+        if (typeof(this.props.stockFilter) !== 'undefined' && this.props.stockFilter !== '') 
+            return transactions.filter(t => t.symbol.toUpperCase() == this.props.stockFilter.toUpperCase());
+
+        return transactions;
+    }
+
     render(){
         return <div>
         <div className="stock-transactions__grid-row">
@@ -18,7 +25,7 @@ class TransactionList extends Component {
         <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text stock-transactions__grid-text--white">price</span></div>
         <div className="stock-transactions__grid-cell"><span className="stock-transactions__grid-text stock-transactions__grid-text--white">total</span></div>
     </div>
-    {this.props.transactions.map(transaction => 
+    {this.filterTransactions(this.props.transactions).map(transaction => 
         <Transaction key={transaction.date} {...transaction} />)}
     </div>;
 
