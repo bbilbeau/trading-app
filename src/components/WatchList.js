@@ -6,7 +6,7 @@ import {fetchAllocationsAndWatchList} from "../actions/actions"
 class WatchList extends Component {
 
     componentDidMount() {
-        this.props.dispatch(fetchAllocationsAndWatchList("userId"));
+        this.props.dispatch(fetchAllocationsAndWatchList("benjamin"));
     }
 
     lookupQuantity(symbol) {
