@@ -1,11 +1,12 @@
 import fetch from 'cross-fetch'
 
-export const REQUEST_WATCHLIST = 'REQUEST_WATCHLIST'
 export const RECEIVE_WATCHLIST = 'RECEIVE_WATCHLIST'
-export const REQUEST_ALLOCATIONS = 'REQUEST_ALLOCATIONS'
+export const WATCH_REMOVED = 'WATCH_REMOVED'
+export const WATCH_ADDED = 'WATCH_ADDED'
+export const TRANSACTION_POSTED = 'TRANSACTION_POSTED'
 export const RECEIVE_ALLOCATIONS = 'RECEIVE_ALLOCATIONS'
-export const REQUEST_TRANSACTIONS = 'REQUEST_TRANSACTIONS'
 export const RECEIVE_TRANSACTIONS = 'RECEIVE_TRANSACTIONS'
+export const RECEIVE_STOCKLIST = 'RECEIVE_STOCKLIST'
 
 export function fetchAllocationsAndWatchList(userId) {
     return dispatch => {
@@ -21,16 +22,8 @@ function receiveWatchList(json) {
       }
 }
 
-function requestWatchList(userId) {
-    return {
-        type: REQUEST_WATCHLIST,
-        userId
-      }
-}
-
 export function fetchWatchList(userId) {
     return function(dispatch) {
-        dispatch(requestWatchList(userId))
         return fetch('http://demomocktradingserver.azurewebsites.net/userdata/watchlist',
         {
           headers: { "userid": userId }
@@ -50,16 +43,8 @@ function receiveAllocations(json) {
       }
 }
 
-function requestAllocations(userId) {
-    return {
-        type: REQUEST_ALLOCATIONS,
-        userId
-      }
-}
-
 export function fetchAllocations(userId) {
     return function(dispatch) {
-        dispatch(requestAllocations(userId))
         return fetch('http://demomocktradingserver.azurewebsites.net/userdata/allocations',
         {
           headers: { "userid": userId }
@@ -79,16 +64,8 @@ function receiveTransactions(json) {
       }
 }
 
-function requestTransactions(userId) {
-    return {
-        type: REQUEST_TRANSACTIONS,
-        userId
-      }
-}
-
 export function fetchTransactions(userId) {
     return function(dispatch) {
-        dispatch(requestTransactions(userId))
         return fetch('http://demomocktradingserver.azurewebsites.net/transactions',
         {
             headers: { 
@@ -100,5 +77,89 @@ export function fetchTransactions(userId) {
             error => console.log('An error occurred.', error)
         )
         .then(json => dispatch(receiveTransactions(json)))
+    }
+}
+
+function watchRemoved(symbol) {
+    return {
+        type: WATCH_REMOVED,
+        item: symbol
+    }
+}
+
+export function removeWatch(userId, symbol) {
+    return function(dispatch) {
+        return fetch('http://demomocktradingserver.azurewebsites.net/userdata/watchlist',
+        {
+            headers: { "userid": userId, 'Content-Type': 'application/json' },
+            method: "post",
+            body: JSON.stringify({
+                symbol: symbol,
+                action: 'REMOVE'
+            })
+        })
+        .then(dispatch(watchRemoved(symbol)))
+    }
+}
+
+function watchAdded(symbol) {
+    return {
+        type: WATCH_ADDED,
+        item: { symbol: symbol } 
+    }
+}
+
+export function addWatch(userId, symbol) {
+    return function(dispatch) {
+        return fetch('http://demomocktradingserver.azurewebsites.net/userdata/watchlist',
+        {
+            headers: { "userid": userId, 'Content-Type': 'application/json' },
+            method: "post",
+            body: JSON.stringify({
+                symbol: symbol,
+                action: 'ADD'
+            })
+        })
+        .then(dispatch(watchAdded(symbol)))
+    }
+}
+
+function transactionPosted() {
+    return {
+        type: TRANSACTION_POSTED
+    }
+}
+
+export function postTransaction(userId, transaction) {
+    return function(dispatch) {
+        return fetch('http://demomocktradingserver.azurewebsites.net/userdata/watchlist',
+        {
+            headers: { "userid": userId, 'Content-Type': 'application/json' },
+            method: "post",
+            body: JSON.stringify({
+                symbol: transaction.symbol,
+                side: transaction.side,
+                amount: transaction.amount
+            })
+        })
+        .then(dispatch(transactionPosted))
+    }
+}
+
+function receiveStockList(json) {
+    return {
+        type: RECEIVE_STOCKLIST,
+        items: json
+    }
+}
+
+export function fetchStockList() {
+    return function(dispatch) {
+        return fetch('http://demomocktradingserver.azurewebsites.net/stocks')
+        .then(
+            response => response.json(),
+            error => console.log('An error occurred.', error)
+        )
+        .then(json => dispatch(receiveStockList(json)))
     }
 }

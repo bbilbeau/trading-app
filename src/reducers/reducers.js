@@ -1,22 +1,31 @@
 import { combineReducers } from 'redux'
 
 import {
-    REQUEST_WATCHLIST,
     RECEIVE_WATCHLIST,
-    REQUEST_ALLOCATIONS,
+    WATCH_REMOVED,
+    WATCH_ADDED,
+    TRANSACTION_POSTED,
     RECEIVE_ALLOCATIONS,
-    REQUEST_TRANSACTIONS,
-    RECEIVE_TRANSACTIONS
+    RECEIVE_TRANSACTIONS,
+    RECEIVE_STOCKLIST
 } from '../actions/actions'
 
 function watchListReducer(state = {watchList:[]}, action) {
   switch (action.type) {
-    case REQUEST_WATCHLIST:
-      return state
     case RECEIVE_WATCHLIST:
       return Object.assign({}, state, {
         watchList: action.items
       })
+    case WATCH_ADDED:
+      return {
+        ...state,
+        watchList: [...state.watchList, action.item]
+      }
+    case WATCH_REMOVED:
+      return {
+        ...state,
+        watchList: state.watchList.filter(w => w.symbol != action.item)
+      }
     default:
       return state
   }
@@ -24,8 +33,6 @@ function watchListReducer(state = {watchList:[]}, action) {
 
 function allocationsReducer(state = {allocations:[]}, action) {
   switch (action.type) {
-    case REQUEST_ALLOCATIONS:
-      return state
     case RECEIVE_ALLOCATIONS:
       return Object.assign({}, state, {
         allocations: action.items
@@ -37,8 +44,6 @@ function allocationsReducer(state = {allocations:[]}, action) {
 
 function transactionsReducer(state = {transactions:[]}, action) {
   switch (action.type) {
-    case REQUEST_TRANSACTIONS:
-      return state
     case RECEIVE_TRANSACTIONS:
       return Object.assign({}, state, {
         transactions: action.items
@@ -48,10 +53,22 @@ function transactionsReducer(state = {transactions:[]}, action) {
   }
 }
 
+function stockReducer(state = {stockList:[]}, action) {
+  switch (action.type) {
+    case RECEIVE_STOCKLIST:
+      return Object.assign({}, state, {
+        stockList: action.items
+      })
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
     watchState: watchListReducer,
     allocationState: allocationsReducer,
-    transactionState: transactionsReducer
+    transactionState: transactionsReducer,
+    stockState: stockReducer
 })
 
 export default rootReducer
