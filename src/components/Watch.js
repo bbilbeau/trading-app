@@ -18,10 +18,8 @@ class Watch extends Component{
             <div className="stock-list__grid-cell"><a><span className="stock-list__btn stock-list__btn--remove" onClick={this.removeWatch}>-</span></a></div>
             <div className="stock-list__grid-cell">{this.props.symbol}</div>
             <div className="stock-list__grid-cell">{this.props.quantity > 0 && this.props.quantity}</div>
-            <div className="stock-list__grid-cell"><a><span className="btn-transaction btn-transaction--buy">buy</span></a></div>
-            <div className="stock-list__grid-cell">{this.props.quantity > 0 && <a><span className="btn-transaction btn-transaction--sell">sell</span></a>
-            }
-            </div>
+            <div className="stock-list__grid-cell"><a><span className="btn-transaction btn-transaction--buy" onClick={() => this.props.openBuySell('buy', this.props.symbol)}>buy</span></a></div>
+            <div className="stock-list__grid-cell">{this.props.quantity > 0 && <a><span className="btn-transaction btn-transaction--sell" onClick={() => this.props.openBuySell('sell', this.props.symbol)}>sell</span></a>}</div>
             <div className="stock-list__grid-cell">{this.props.quantity > 0 && this.props.quantity}</div>
         </div>;
     }

@@ -132,13 +132,13 @@ function transactionPosted() {
 
 export function postTransaction(userId, transaction) {
     return function(dispatch) {
-        return fetch('http://demomocktradingserver.azurewebsites.net/userdata/watchlist',
+        return fetch('http://demomocktradingserver.azurewebsites.net/transactions',
         {
             headers: { "userid": userId, 'Content-Type': 'application/json' },
             method: "post",
             body: JSON.stringify({
                 symbol: transaction.symbol,
-                side: transaction.side,
+                side: transaction.side.toUpperCase(),
                 amount: transaction.amount
             })
         })

@@ -16,7 +16,7 @@ class WatchList extends Component {
     render(){
         return <div>
         {this.props.watchList.map(w => 
-            <Watch key={w.symbol} symbol={w.symbol} quantity={this.lookupQuantity(w.symbol)} />
+            <Watch key={w.symbol} symbol={w.symbol} quantity={this.lookupQuantity(w.symbol)} openBuySell={this.props.openBuySell} />
         )}
         </div>
     }
