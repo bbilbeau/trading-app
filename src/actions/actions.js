@@ -7,6 +7,9 @@ export const TRANSACTION_POSTED = 'TRANSACTION_POSTED'
 export const RECEIVE_ALLOCATIONS = 'RECEIVE_ALLOCATIONS'
 export const RECEIVE_TRANSACTIONS = 'RECEIVE_TRANSACTIONS'
 export const RECEIVE_STOCKLIST = 'RECEIVE_STOCKLIST'
+export const RECEIVE_TODAYSTOCKPRICE = 'RECEIVE_TODAYSTOCKPRICE'
+export const RECEIVE_CURRENTSTOCKPRICE = 'RECEIVE_CURRENTSTOCKPRICE'
+export const UPDATE_SELECTEDSTOCK = 'UPDATE_SELECTEDSTOCK'
 
 export function fetchAllocationsAndWatchList(userId) {
     return dispatch => {
@@ -143,6 +146,14 @@ export function postTransaction(userId, transaction) {
             })
         })
         .then(dispatch(transactionPosted))
+        .then(dispatch(refreshTransactions(userId)))
+    }
+}
+
+function refreshTransactions(userId) {
+    return dispatch => {
+        dispatch(fetchAllocations(userId))
+        dispatch(fetchTransactions(userId))
     }
 }
 
@@ -161,5 +172,38 @@ export function fetchStockList() {
             error => console.log('An error occurred.', error)
         )
         .then(json => dispatch(receiveStockList(json)))
+    }
+}
+
+function receiveTodayStockPrice(symbol, json) {
+    return {
+        type: RECEIVE_TODAYSTOCKPRICE,
+        symbol: symbol,
+        items: json.aggregated
+    }
+}
+
+export function fetchTodayStockPrice(symbol) {
+    return function(dispatch) {
+        return fetch(`http://demomocktradingserver.azurewebsites.net/stocks/${symbol.toUpperCase()}/price/today`)
+        .then(
+            response => response.json(),
+            error => console.log('An error occurred.', error)
+        )
+        .then(json => dispatch(receiveTodayStockPrice(symbol, json)))
+    }
+}
+
+function updateSelectedStock(symbol) {
+    return {
+        type: UPDATE_SELECTEDSTOCK,
+        item: symbol
+    }
+}
+
+export function selectStock(symbol) {
+    return dispatch => {
+        dispatch(updateSelectedStock(symbol))
+        dispatch(fetchTodayStockPrice(symbol))
     }
 }

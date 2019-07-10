@@ -1,9 +1,10 @@
-import React, {Component} from "react";
+import React, {Component} from "react"
 import AddWatchModal from './AddWatchModal'
 import WatchList from './WatchList'
 import BuySellModal from './BuySellModal'
 import TransactionList from "./TransactionList"
-import { connect } from "react-redux";
+import PriceChart from './PriceChart'
+import { connect } from "react-redux"
 import {fetchStockList} from "../actions/actions" 
 
 class Home extends Component {
@@ -66,9 +67,10 @@ class Home extends Component {
                     <WatchList openBuySell={this.openBuySellModal} />
                 </div>
                 </section>
-
                 <section className="stock-graph">
-                    <div id="stockGraphContainer" className="stock-graph__container"></div>
+                    <div id="stockGraphContainer" className="stock-graph__container">
+                        <PriceChart stock="ACME" />
+                    </div>
                 </section>
                 <section className="stock-transactions full-width">
                     <TransactionList />

@@ -13,10 +13,14 @@ class WatchList extends Component {
         return this.props.allocations[symbol];
     }
 
+    lookupPrice(symbol) {
+        return this.props.prices[symbol];
+    }
+
     render(){
         return <div>
         {this.props.watchList.map(w => 
-            <Watch key={w.symbol} symbol={w.symbol} quantity={this.lookupQuantity(w.symbol)} openBuySell={this.props.openBuySell} />
+            <Watch key={w.symbol} symbol={w.symbol} price={this.lookupPrice(w.symbol)} quantity={this.lookupQuantity(w.symbol)} openBuySell={this.props.openBuySell} />
         )}
         </div>
     }
@@ -24,7 +28,8 @@ class WatchList extends Component {
 
 WatchList.defaultProps = {
     watchList: [],
-    allocations: {}
+    allocations: {},
+    prices: {}
 }
 
 function mapStateToProps(state) {
@@ -32,9 +37,13 @@ function mapStateToProps(state) {
     var allocations = {};
     state.allocationState.allocations.map(a => allocations[a.symbol] = a.amount);
 
+    var prices = {};
+    state.stockState.stockList.map(s => prices[s.symbol] = s.lastTick.price);
+    
     return { 
         watchList: state.watchState.watchList,
-        allocations: allocations 
+        allocations: allocations,
+        prices: prices
     }
 }
 

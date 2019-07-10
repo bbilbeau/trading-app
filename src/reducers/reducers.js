@@ -7,7 +7,10 @@ import {
     TRANSACTION_POSTED,
     RECEIVE_ALLOCATIONS,
     RECEIVE_TRANSACTIONS,
-    RECEIVE_STOCKLIST
+    RECEIVE_STOCKLIST,
+    RECEIVE_TODAYSTOCKPRICE,
+    RECEIVE_CURRENTSTOCKPRICE,
+    UPDATE_SELECTEDSTOCK
 } from '../actions/actions'
 
 function watchListReducer(state = {watchList:[]}, action) {
@@ -53,12 +56,21 @@ function transactionsReducer(state = {transactions:[]}, action) {
   }
 }
 
-function stockReducer(state = {stockList:[]}, action) {
+function stockReducer(state = {stockList:[], stockPriceToday:[], symbol: null}, action) {
   switch (action.type) {
     case RECEIVE_STOCKLIST:
       return Object.assign({}, state, {
         stockList: action.items
       })
+    case RECEIVE_TODAYSTOCKPRICE:
+      return Object.assign({}, state, {
+        symbol: action.symbol,
+        stockPriceToday: action.items
+      })
+    case UPDATE_SELECTEDSTOCK:
+        return Object.assign({}, state, {
+          selectedStock: action.item
+        })
     default:
       return state
   }
