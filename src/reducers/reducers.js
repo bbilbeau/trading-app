@@ -6,11 +6,13 @@ import {
     WATCH_ADDED,
     TRANSACTION_POSTED,
     RECEIVE_ALLOCATIONS,
+    RECEIVE_LIQUIDITY,
     RECEIVE_TRANSACTIONS,
     RECEIVE_STOCKLIST,
     RECEIVE_TODAYSTOCKPRICE,
     RECEIVE_CURRENTSTOCKPRICE,
-    UPDATE_SELECTEDSTOCK
+    UPDATE_SELECTEDSTOCK,
+    UPDATE_SELECTEDSTOCKFROMWATCHLIST
 } from '../actions/actions'
 
 function watchListReducer(state = {watchList:[]}, action) {
@@ -34,11 +36,15 @@ function watchListReducer(state = {watchList:[]}, action) {
   }
 }
 
-function allocationsReducer(state = {allocations:[]}, action) {
+function allocationsReducer(state = {allocations:[], liquidity:0}, action) {
   switch (action.type) {
     case RECEIVE_ALLOCATIONS:
       return Object.assign({}, state, {
         allocations: action.items
+      })
+    case RECEIVE_LIQUIDITY:
+      return Object.assign({}, state, { 
+        liquidity: action.amount
       })
     default:
       return state
@@ -56,7 +62,7 @@ function transactionsReducer(state = {transactions:[]}, action) {
   }
 }
 
-function stockReducer(state = {stockList:[], stockPriceToday:[], symbol: null}, action) {
+function stockReducer(state = {stockList:[], stockPriceToday:[], selectedStock: null, symbol: null}, action) {
   switch (action.type) {
     case RECEIVE_STOCKLIST:
       return Object.assign({}, state, {
@@ -71,6 +77,11 @@ function stockReducer(state = {stockList:[], stockPriceToday:[], symbol: null}, 
         return Object.assign({}, state, {
           selectedStock: action.item
         })
+    case UPDATE_SELECTEDSTOCKFROMWATCHLIST:
+      if (state.selectedStock != null || typeof(action.items) === 'undefined' || action.items.length == 0) return state;
+      return Object.assign({}, state, {
+        selectedStock: action.items.items[0].symbol
+      })
     default:
       return state
   }

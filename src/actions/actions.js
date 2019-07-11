@@ -5,11 +5,13 @@ export const WATCH_REMOVED = 'WATCH_REMOVED'
 export const WATCH_ADDED = 'WATCH_ADDED'
 export const TRANSACTION_POSTED = 'TRANSACTION_POSTED'
 export const RECEIVE_ALLOCATIONS = 'RECEIVE_ALLOCATIONS'
+export const RECEIVE_LIQUIDITY = 'RECEIVE_LIQUIDITY'
 export const RECEIVE_TRANSACTIONS = 'RECEIVE_TRANSACTIONS'
 export const RECEIVE_STOCKLIST = 'RECEIVE_STOCKLIST'
 export const RECEIVE_TODAYSTOCKPRICE = 'RECEIVE_TODAYSTOCKPRICE'
 export const RECEIVE_CURRENTSTOCKPRICE = 'RECEIVE_CURRENTSTOCKPRICE'
 export const UPDATE_SELECTEDSTOCK = 'UPDATE_SELECTEDSTOCK'
+export const UPDATE_SELECTEDSTOCKFROMWATCHLIST = 'UPDATE_SELECTEDSTOCKFROMWATCHLIST'
 
 export function fetchAllocationsAndWatchList(userId) {
     return dispatch => {
@@ -26,7 +28,7 @@ function receiveWatchList(json) {
 }
 
 export function fetchWatchList(userId) {
-    return function(dispatch) {
+    return function(dispatch, getState) {
         return fetch('http://demomocktradingserver.azurewebsites.net/userdata/watchlist',
         {
           headers: { "userid": userId }
@@ -36,6 +38,18 @@ export function fetchWatchList(userId) {
             error => console.log('An error occurred.', error)
         )
         .then(json => dispatch(receiveWatchList(json)))
+        .then(json => dispatch(updateSelectedStockFromWatchList(json)))
+        .then(() => {
+            var selectedStock = getState().stockState.selectedStock;
+            if (selectedStock != null) dispatch(fetchTodayStockPrice(selectedStock))
+        })
+    }
+}
+
+function updateSelectedStockFromWatchList(json) {
+    return {
+        type: UPDATE_SELECTEDSTOCKFROMWATCHLIST,
+        items: json
     }
 }
 
@@ -205,5 +219,26 @@ export function selectStock(symbol) {
     return dispatch => {
         dispatch(updateSelectedStock(symbol))
         dispatch(fetchTodayStockPrice(symbol))
+    }
+}
+
+function receiveLiquidity(json) {
+    return {
+        type: RECEIVE_LIQUIDITY,
+        amount: json
+    }
+}
+
+export function fetchLiquidity(userId) {
+    return function(dispatch) {
+        return fetch('http://demomocktradingserver.azurewebsites.net/userdata/liquidity',
+        {
+            headers: { "userid": userId }
+        })
+        .then(
+            response => response.json(),
+            error => console.log('An error occurred.', error)
+        )
+        .then(json => dispatch(receiveLiquidity(json)))
     }
 }

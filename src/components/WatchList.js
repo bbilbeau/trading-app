@@ -1,13 +1,8 @@
 import React, {Component} from "react";
 import { connect } from "react-redux";
 import Watch from "./Watch";
-import {fetchAllocationsAndWatchList} from "../actions/actions" 
 
 class WatchList extends Component {
-
-    componentDidMount() {
-        this.props.dispatch(fetchAllocationsAndWatchList("benjamin"));
-    }
 
     lookupQuantity(symbol) {
         return this.props.allocations[symbol];

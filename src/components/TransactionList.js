@@ -29,7 +29,7 @@ class TransactionList extends Component {
       };*/
 
     componentDidMount() {
-        this.props.dispatch(fetchTransactions("benjamin"));
+        
     }
 
     filterTransactions(transactions) {
